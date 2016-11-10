@@ -80,61 +80,61 @@ print '##################################################################'
 def default_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('netscript',password)
+    account = Account('username',password)
     return account
 
 def asa_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('ciscoworks',password)
+    account = Account('username',password)
     return account
 
 def ne_checkpoint_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('admin',password)
+    account = Account('username',password)
     return account
 
 def sg_checkpoint_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('admin',password)
+    account = Account('username',password)
     return account
 
 def fortinet_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('ciscoworks',password)
+    account = Account('username',password)
     return account
 
 def juniper_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('nssadmin',password)
+    account = Account('username',password)
     return account
 
 def a10_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('ciscoworks',password)
+    account = Account('username',password)
     return account
 
 def f5_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('avasseur',password)
+    account = Account('username',password)
     return account
 
 def blade_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('ciscoworks',password)
+    account = Account('username',password)
     return account
 
 def citrix_auth():
     #password = raw_input('What is your password?')
     password = '''xxxxx'''
-    account = Account('nsroot',password)
+    account = Account('username',password)
     return account
 
 def createSSHClient(server, port, user, password):
@@ -233,7 +233,6 @@ for file in files:
                     print('1rst sh run fail, try enable password')
                     print "Unexpected error:", sys.exc_info()
                     conn.execute('enable')
-                    #conn.send('nexgen21\n')
                     conn.execute('show run')
                     #conn.execute('show run')
                     output = conn.response
@@ -306,7 +305,7 @@ for file in files:
             device_name = line.replace('\n', '')
             print ('  %s'%device_name)
             device_conf = ('%s.cfg' % device_name)
-            account = Account('ciscoworks',password = '''xxxxx''',password2 = '''xxxxx''')
+            account = Account('username',password = '''xxxxx''',password2 = '''xxxxx''')
 
             try:
                 conn = SSH2()
@@ -548,8 +547,8 @@ for file in files:
 
             try:
                 port = 22
-                user = 'admin'
-                password = 'N0t4u2n0!'
+                user = 'username'
+                password = 'xxxx'
                 ssh = createSSHClient(device_name, port, user, password)
                 scp = SCPClient(ssh.get_transport())
                 scp.get('sys_config','/home/netadmin/scripts/test/BACKUP/%s/FORTINET/%s'%(date_of_the_day,device_conf))
@@ -823,10 +822,10 @@ List of devices not saved:
   %s
 
 Backup directory:
-/home/netadmin/scripts/test/BACKUP/%s/
+/scripts/test/BACKUP/%s/
 
 You can check the configuration change on:
-/home/netadmin/scripts/test/BACKUP/%s/Configuration_changes_%s.txt
+/scripts/test/BACKUP/%s/Configuration_changes_%s.txt
 
 Have a nice day.
 
@@ -835,9 +834,9 @@ A10_percent,NETSCALER_percent,F5_percent,list_of_device_fail,date_of_the_day,dat
 
 msg = MIMEMultipart()
 
-fromaddr = "VMINFCET05@socgen.com"
-toaddr = ["alexandre.vasseur@socgen.com", "GTS-Ame-Tfo-Msc@sgcib.com", "GTS-Ame-Tfo-Cty@socgen.com"]
-#"GTS-Ame-Tfo-Cty@socgen.com"
+fromaddr = "test"
+toaddr = ["test1", "test2", "test3"]
+#"test4m"
 
 
 msg["From"] = fromaddr
@@ -846,9 +845,9 @@ msg["Subject"] = ("BACKUP SCRIPT REPORT - %s"%date_du_jour)
 
 msg.attach(MIMEText(body, 'plain'))
 
-if os.path.isfile("/home/netadmin/scripts/test/BACKUP/%s/Configuration_changes_%s.txt"%(date_of_the_day,date_of_the_day)):
+if os.path.isfile("/scripts/test/BACKUP/%s/Configuration_changes_%s.txt"%(date_of_the_day,date_of_the_day)):
         filename = ("Configuration_changes_%s.txt"%date_of_the_day)
-        attachment = open("/home/netadmin/scripts/test/BACKUP/%s/Configuration_changes_%s.txt"%(date_of_the_day,date_of_the_day), "rb")
+        attachment = open("/scripts/test/BACKUP/%s/Configuration_changes_%s.txt"%(date_of_the_day,date_of_the_day), "rb")
         part = MIMEBase('application', 'octet-stream')
         part.set_payload((attachment).read())
         part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
@@ -869,7 +868,7 @@ server.quit()
 
 
 
-#Author = Alexandre Vasseur
+#Author = BOGOSS
 import os
 import time
 from datetime import datetime, timedelta
@@ -912,8 +911,8 @@ def configuration_compare():
     date_of_the_day = time.strftime("%Y%m%d")
     date_of_last_day = (datetime.today() - timedelta(days=1)).strftime("%Y%m%d")
 
-    path1 = ("/home/netadmin/scripts/test/BACKUP/%s/*/*"%date_of_the_day)
-    path2 = ("/home/netadmin/scripts/test/BACKUP/%s/*/*"%date_of_last_day)
+    path1 = ("/scripts/test/BACKUP/%s/*/*"%date_of_the_day)
+    path2 = ("/scripts/test/BACKUP/%s/*/*"%date_of_last_day)
     files1 = glob.glob(path1)
     files2 = glob.glob(path2)
     summary=[]
@@ -1142,7 +1141,7 @@ def configuration_compare():
         pass
     else:
         print 'Configs changed'
-       os.chdir("/home/netadmin/scripts/test/BACKUP/%s"%date_of_the_day)
+       os.chdir("/scripts/test/BACKUP/%s"%date_of_the_day)
         change_wr = open('Configuration_changes_%s.txt'%date_of_the_day, 'a')
         #print '\n'
         #print '##################################################'
